@@ -1,0 +1,70 @@
+---
+- name: Remove the VRF and add three networks
+  hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Remove VLAN interfaces L3 Config
+    cisco.nxos.nxos_l3_interfaces:
+      config:
+      - name: vlan15
+      - name: vlan87
+      - name: vlan95
+      state: deleted
+
+  - name: Assign vlan15 interface and assign to chiefs vrf
+    cisco.nxos.nxos_vrf_interface:
+      vrf: chiefs
+      interface: vlan15
+      state: absent
+
+  - name: Assign vlan87 interface and assign to chiefs vrf
+    cisco.nxos.nxos_vrf_interface:
+      vrf: chiefs
+      interface: vlan87
+      state: absent
+
+  - name: Assign vlan95 interface and assign to chiefs vrf
+    cisco.nxos.nxos_vrf_interface:
+      vrf: chiefs
+      interface: vlan95
+      state: absent
+
+  - name: Remove VLAN interfaces
+    cisco.nxos.nxos_interfaces:
+      config:
+      - name: vlan15
+      - name: vlan87
+      - name: vlan95
+      state: deleted
+
+  - name: Remove VLAN interfaces
+    cisco.nxos.nxos_l2_interfaces:
+      config:
+      - name: vlan15
+      - name: vlan87
+      - name: vlan95
+      state: deleted
+
+  - name: default access ports
+    cisco.nxos.nxos_l2_interfaces:
+      config:
+      - name: eth1/5
+      - name: eth1/6
+      - name: eth1/7
+      state: deleted
+
+  - name: remove chiefs vrf
+    cisco.nxos.nxos_vrf:
+      name: chiefs
+      state: absent 
+
+  - name: remove vlans
+    cisco.nxos.nxos_vlans:
+      config:
+      - vlan_id: 15
+      - vlan_id: 87
+      - vlan_id: 95
+      state: deleted
+
+

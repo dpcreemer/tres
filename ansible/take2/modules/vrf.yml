@@ -1,0 +1,6 @@
+---
+# tasks for creating a VRF 
+- name: Create VRF
+  cisco.nxos.nxos_vrf:
+    name: "{{ vrf }}"
+    state: present

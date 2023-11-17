@@ -1,0 +1,50 @@
+---
+- name: Basic switch setup
+  hosts: all
+  gather_facts: false
+
+  vars:
+    vrf: chiefs
+
+  tasks:
+  - name: Basic switch config
+    ansible.builtin.import_tasks: modules/base.yml
+    vars:
+      hostname: tres-ansible
+      features:
+        - interface-vlan
+        - hsrp
+
+  - name: Create VRF
+    ansible.builtin.import_tasks: modules/vrf.yml
+ 
+  - name: Create Networks
+    ansible.builtin.include_tasks: modules/net_l3.yml
+    vars:
+      vlan: "{{ item.vlan }}"
+      name: "{{ item.name }}"
+    loop:
+      - vlan: 15
+        name: Mahomes
+      - vlan: 87
+        name: Kelce
+      - vlan: 95
+        name: Jones
+
+  - name: Configure Access Interfaces
+    ansible.builtin.include_tasks: modules/interface_access.yml
+    vars:
+      interface: "{{ item.interface }}"
+      description: "{{ item.description }}"
+      vlan: "{{ item.vlan }}"
+    loop:
+      - interface: eth1/5
+        description: Mahomes
+        vlan: 15
+      - interface: eth1/6
+        description: Kelce
+        vlan: 87
+      - interface: eth1/7
+        description: Jones
+        vlan: 95
+

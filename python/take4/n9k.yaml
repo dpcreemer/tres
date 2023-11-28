@@ -1,0 +1,45 @@
+switch:
+  address: 198.19.36.167
+  username: cisco
+  password: cisco
+hostname: 'tres-python'
+features:
+  - interface-vlan
+  - hsrp
+vrfs:
+  - chiefs
+networks:
+  - name: Mahomes
+    id: 15
+    ip: 192.168.15.2/24
+    vrf: chiefs
+    hsrp:
+      ip: 192.168.15.1
+      priority: 110
+  - name: Kelce
+    id: 87
+    ip: 192.168.87.2/24
+    vrf: chiefs
+    hsrp: 
+     ip: 192.168.87.1
+     priority: 110
+  - name: Jones
+    id: 95
+    ip: 192.168.95.2/24
+    vrf: chiefs
+    hsrp:
+      ip: 192.168.95.1
+      priority: 110
+interfaces:
+  - interface: eth1/5
+    mode: access
+    description: Mahomes
+    vlan: 15
+  - interface: eth1/6
+    mode: access
+    description: Kelce
+    vlan: 87
+  - interface: eth1/7
+    mode: access
+    description: Jones
+    vlan: 95

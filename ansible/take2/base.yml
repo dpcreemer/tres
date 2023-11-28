@@ -8,7 +8,7 @@
 
   tasks:
   - name: Basic switch config
-    ansible.builtin.import_tasks: modules/base.yml
+    ansible.builtin.import_tasks: tasks/base.yml
     vars:
       hostname: tres-ansible
       features:
@@ -16,10 +16,10 @@
         - hsrp
 
   - name: Create VRF
-    ansible.builtin.import_tasks: modules/vrf.yml
+    ansible.builtin.import_tasks: tasks/vrf.yml
  
   - name: Create Networks
-    ansible.builtin.include_tasks: modules/net_l3.yml
+    ansible.builtin.include_tasks: tasks/net_l3.yml
     vars:
       vlan: "{{ item.vlan }}"
       name: "{{ item.name }}"
@@ -32,7 +32,7 @@
         name: Jones
 
   - name: Configure Access Interfaces
-    ansible.builtin.include_tasks: modules/interface_access.yml
+    ansible.builtin.include_tasks: tasks/interface_access.yml
     vars:
       interface: "{{ item.interface }}"
       description: "{{ item.description }}"

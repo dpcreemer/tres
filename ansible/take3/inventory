@@ -1,0 +1,4 @@
+nxos:
+  hosts: 
+    switch1:
+      ansible_host: 198.19.36.167

@@ -1,0 +1,18 @@
+---
+- name: Basic switch setup
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Remove SVI
+      cisco.nxos.nxos_interfaces:
+        config:
+          - name: vlan85
+        state: purged 
+      
+    - name: Remove VLAN
+      cisco.nxos.nxos_vlans:
+        config:
+          - vlan_id: 85
+        state: deleted
+

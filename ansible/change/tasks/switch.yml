@@ -1,0 +1,73 @@
+---
+# tasks for base switch setup
+- name: Change hostname
+  cisco.nxos.nxos_hostname:
+    config:
+      hostname: "{{ hostname }}"
+
+- name: Enable features
+  cisco.nxos.nxos_feature:
+    feature: "{{ item }}"
+    state: enabled
+  loop: "{{ features }}"
+
+- name: Create VRFs
+  cisco.nxos.nxos_vrf:
+    name: "{{ item }}"
+  loop: "{{ vrfs }}"
+
+- name: Create VLANs
+  cisco.nxos.nxos_vlans:
+    config:
+      - vlan_id: "{{ item.vlan }}"
+        name: "{{ item.name }}"
+  loop: "{{ networks }}"
+
+- name: Create SVI
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "vlan{{ item.vlan}}"
+        enabled: true
+  loop: "{{ networks }}"
+
+- name: Apply VRF to SVI
+  cisco.nxos.nxos_vrf_interface:
+    interface: "vlan{{ item.vlan }}"
+    vrf: "{{ item.vrf }}"
+    state: present
+  loop: "{{ networks }}"
+
+- name: Assign IP to SVI
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+    - name: "vlan{{ item.vlan }}"
+      ipv4:
+      - address: "{{ item.address }}"
+        tag: 123
+  loop: "{{ networks }}"
+
+- name: Configure HSRP 
+  cisco.nxos.nxos_hsrp:
+    group: "{{ item.vlan }}"
+    interface: "vlan{{ item.vlan }}"
+    vip: "{{ item.hsrp.ip }}"
+    priority: "{{ item.hsrp.priority }}"
+    preempt: enabled
+  loop: "{{ networks }}"
+    
+- name: Config interface for Access
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        description: "{{ item.description }}"
+        mode: layer2
+        enabled: true
+  loop: "{{ access_interfaces }}"
+
+- name: Assign VLAN to interface
+  cisco.nxos.nxos_l2_interfaces:
+    config:
+      - name: "{{ item.interface }}"
+        access:
+          vlan: "{{ item.vlan }}"
+  loop: "{{ access_interfaces }}"

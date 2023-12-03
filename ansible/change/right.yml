@@ -1,0 +1,47 @@
+---
+- name: Basic switch setup
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Basic switch config
+      ansible.builtin.import_tasks: tasks/switch.yml
+      vars:
+        hostname: tres-ansible
+        features:
+          - interface-vlan
+          - hsrp
+        vrfs:
+          - chiefs
+        networks:
+          - vlan: 15
+            name: Mahomes
+            vrf: chiefs
+            address: 192.168.15.2/24
+            hsrp:
+              ip: 192.168.15.1
+              priority: 110
+          - vlan: 87
+            name: Kelce
+            vrf: chiefs
+            address: 192.168.87.2/24
+            hsrp:
+              ip: 192.168.87.1
+              priority: 110
+          - vlan: 95
+            name: Jones
+            vrf: chiefs
+            address: 192.168.95.2/24
+            hsrp:
+              ip: 192.168.95.1
+              priority: 110
+        access_interfaces:
+          - interface: eth1/5
+            description: Mahomes
+            vlan: 15
+          - interface: eth1/6
+            description: Kelce
+            vlan: 87
+          - interface: eth1/7
+            description: Jones
+            vlan: 95

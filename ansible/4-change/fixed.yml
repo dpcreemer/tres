@@ -5,7 +5,7 @@
 
   tasks:
     - name: Basic switch config
-      ansible.builtin.import_tasks: tasks/switch.yml
+      ansible.builtin.import_tasks: tasks/n9k.yml
       vars:
         hostname: tres-ansible
         features:

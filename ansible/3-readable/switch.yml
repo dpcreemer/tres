@@ -5,32 +5,32 @@
 
   tasks:
     - name: Basic switch config
-      ansible.builtin.import_tasks: tasks/switch.yml
+      ansible.builtin.import_tasks: tasks/n9k.yml
       vars:
         hostname: tres-ansible
         features:
           - interface-vlan
           - hsrp
         vrfs:
-          - chiefs
+          - cheifs
         networks:
-          - vlan: 15
+          - vlan: 13
             name: Mahomes
-            vrf: chiefs
-            address: 192.168.15.2/24
+            vrf: cheifs
+            address: 192.168.13.2/24
             hsrp:
-              ip: 192.168.15.1
+              ip: 192.168.13.1
               priority: 110
-          - vlan: 85
+          - vlan: 87
             name: Kelce
-            vrf: chiefs
-            address: 192.168.85.2/24
+            vrf: cheifs
+            address: 192.168.87.2/24
             hsrp:
-              ip: 192.168.85.1
+              ip: 192.168.87.1
               priority: 110
           - vlan: 95
             name: Jones
-            vrf: chiefs
+            vrf: cheifs
             address: 192.168.95.2/24
             hsrp:
               ip: 192.168.95.1
@@ -38,10 +38,10 @@
         access_interfaces:
           - interface: eth1/5
             description: Mahomes
-            vlan: 15
+            vlan: 13
           - interface: eth1/6
             description: Kelce
-            vlan: 85
+            vlan: 87
           - interface: eth1/7
             description: Jones
             vlan: 95

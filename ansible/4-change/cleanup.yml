@@ -7,12 +7,17 @@
     - name: Remove SVI
       cisco.nxos.nxos_interfaces:
         config:
-          - name: vlan85
+          - name: vlan13
         state: purged 
-      
+
     - name: Remove VLAN
       cisco.nxos.nxos_vlans:
         config:
-          - vlan_id: 85
+          - vlan_id: 13
         state: deleted
+
+    - name: Delete VRF
+      cisco.nxos.nxos_vrf:
+        name: cheifs
+        state: absent
 

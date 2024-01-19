@@ -1,5 +1,5 @@
 ---
-- name: Create the VRF and add three networks
+- name: Configure switch
   hosts: all
   gather_facts: false
 
@@ -9,15 +9,15 @@
       feature: interface-vlan
       state: enabled
 
-  - name: Change hostname
-    cisco.nxos.nxos_hostname:
-      config:
-        hostname: tres-ansible
-
   - name: Enable HSRP feature 
     cisco.nxos.nxos_feature:
       feature: hsrp 
       state: enabled
+
+  - name: Change hostname
+    cisco.nxos.nxos_hostname:
+      config:
+        hostname: tres-ansible
 
   - name: Create chiefs vrf
     cisco.nxos.nxos_vrf:

@@ -1,0 +1,47 @@
+hostname: 'tres-terraform'
+features:
+  - ssh
+  - interface_vlan
+  - hsrp
+vrfs:
+  - name: chiefs
+vlans:
+  - id: 15
+    name: mahomes
+  - id: 87
+    name: kelce
+  - id: 95
+    name: jones
+interfaces_vlan:
+  - id: 15
+    admin_state: true
+    description: mahomes
+    vrf: chiefs 
+    mtu: 9216
+    ipv4_address: '192.168.15.2/24'
+  - id: 87
+    admin_state: true
+    description: kelce
+    vrf: chiefs
+    mtu: 9216
+    ipv4_address: '192.168.87.2/24'
+  - id: 95
+    admin_state: true
+    description: jones
+    vrf: chiefs
+    mtu: 9216
+    ipv4_address: '192.168.95.2/24'
+interfaces_ethernet:
+  - id: 1/5
+    description: mahomes
+    layer: layer2 
+    access_vlan: 15
+  - id: 1/6
+    description: kelce
+    layer: layer2
+    access_vlan: 87
+  - id: 1/7
+    description: jones
+    layer: layer2
+    access_vlan: 95
+

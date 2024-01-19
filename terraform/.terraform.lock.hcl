@@ -5,6 +5,7 @@ provider "registry.terraform.io/ciscodevnet/nxos" {
   version = "0.5.1"
   hashes = [
     "h1:Me7se1bPUJUYn5OmnN/haue+zXB6/qE6bqGw+sPBCi8=",
+    "h1:XDatQUDnFFatDkgW+626Mr63PMYzIdh9840+bNXSnEE=",
     "zh:1668a11509d0833f1e6cc3aaea1830d9130c1cdcf4b7e40fea9e30489ece9944",
     "zh:1e0ddf1d5733754ebb98e892ee263ec97a34354fe6d60e3ffd7f390e66925087",
     "zh:2ad8d2a81957bcfbb817af7271bf81c7074e24f17a5ab1a243a6eeabd3d4f3c1",

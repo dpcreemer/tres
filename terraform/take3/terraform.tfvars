@@ -1,8 +1,0 @@
-hostname = "tres-terraform"
-vrf = "chiefs"
-net1_vlan = "15"
-net1_name = "Mahomes"
-net2_vlan = "87"
-net2_name = "Kelce"
-net3_vlan = "95"
-net3_name = "Jones"

@@ -1,6 +1,0 @@
-module "nxos_vrf" {
-  source = "netascode/vrf/nxos"
-  
-  name = "chiefs"
-  description = "VRF for KC Chiefs"
-}

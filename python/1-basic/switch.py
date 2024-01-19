@@ -5,6 +5,7 @@ requests.packages.urllib3.disable_warnings()
 session = requests.Session()
 session.verify = False
 
+# Authenticate
 payload = {
   'aaaUser': {
     'attributes': {
@@ -15,6 +16,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/aaaLogin.json', json=payload)
 
+# Set Hostname
 payload = {
   'topSystem': {
     'attributes': {
@@ -24,6 +26,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo.json', json=payload)
 
+# Enable feature Interface VLAN
 payload = {
   'fmInterfaceVlan': {
     'attributes': {
@@ -33,6 +36,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys/fm.json', json=payload)
 
+# Enable feature HSRP
 payload = {
   'fmHsrp': {
     'attributes': {
@@ -42,6 +46,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys/fm.json', json=payload)
 
+# Create vrf chiefs
 payload = {
   'l3Inst': {
     'attributes': {
@@ -52,6 +57,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys.json', json=payload)
 
+# Create VLAN 15
 payload = {
   'l2BD': {
     'attributes': {
@@ -62,6 +68,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys/bd.json', json=payload)
 
+# Create SVI for VLAN 15 and assign it to the chiefs VRF
 payload = {
   'sviIf': {
     'attributes': {
@@ -82,6 +89,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys/intf.json', json=payload)
 
+# Assign an IP address to the VLAN 15 SVI
 payload = {
   'ipv4If':{
     'attributes': {
@@ -100,6 +108,7 @@ payload = {
 } 
 response = session.post('https://198.19.36.167/api/mo/sys/ipv4/inst/dom-[chiefs]', json=payload)
 
+# Configure HSRP for VLAN 15
 payload = {
   'hsrpIf': {
     'attributes': {
@@ -123,6 +132,7 @@ payload = {
 }
 response = session.post('https://198.19.36.167/api/mo/sys/hsrp/inst.json', json=payload)
 
+# Assign VLAN 15 to eth1/5
 payload = {
   'l1PhysIf': {
     'attributes': {

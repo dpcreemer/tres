@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import requests, json, yaml
+import requests, json
 from getpass import getpass
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -14,9 +15,9 @@ class Switch(object):
     self.authenticate()
 
   def post(self, path, data):
-    url = f'http://{self.address}/api/{path}'
+    url = f'https://{self.address}/api/{path}'
     if url[-5:] != '.json': url+= '.json'
-    response = self.__session.post(url, json=data)
+    response = self.__session.post(url, json.dumps(data))
     if not response.ok:
       raise Exception(response.text)
 
@@ -126,10 +127,7 @@ class Switch(object):
         'children': [
           {
             'hsrpGroup': {
-      
-
-
-                'attributes': {
+              'attributes': {
                 'id': vlan,
                 'af': 'ipv4',
                 'ctrl': 'preempt',
@@ -158,29 +156,6 @@ class Switch(object):
     }
     self.post('mo/sys/intf', payload)
 
-  def close(self):
+  def disconnect(self):
     self.__session.close()
-
-def process_file(filename):
-  with open(filename) as f: data = f.read()
-  config = yaml.safe_load(data)
-  username = config['switch']['username'] if 'username' in config['switch'].keys() else None
-  password = config['switch']['password'] if 'password' in config['switch'].keys() else None
-  switch = Switch(config['switch']['address'], username, password)
-  if 'hostname' in config.keys(): switch.hostname(config['hostname'])
-  if 'features' in config.keys():
-    for feature in config['features']:
-      switch.feature(feature)
-  if 'vrfs' in config.keys():
-    for vrf in config['vrfs']:
-      switch.vrf(vrf)
-  if 'networks' in config.keys():
-    for network in config['networks']:
-      switch.network(network['name'], network['id'], network['ip'], network['vrf'])
-      if 'hsrp' in network.keys():
-        switch.hsrp(network['id'], network['hsrp']['ip'], network['hsrp']['priority'])
-  if 'interfaces' in config.keys():
-    for interface in config['interfaces']:
-      if interface['mode'] == 'access':
-        switch.access_interface(interface['interface'], interface['vlan'], interface['description'])
 

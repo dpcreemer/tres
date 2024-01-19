@@ -156,6 +156,6 @@ class Switch(object):
     }
     self.post('mo/sys/intf', payload)
 
-  def close(self):
+  def disconnect(self):
     self.__session.close()
 

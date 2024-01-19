@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import requests, json
 
 requests.packages.urllib3.disable_warnings()
@@ -6,6 +5,7 @@ base_url = 'https://198.19.36.167/api'
 session = requests.Session()
 session.verify = False
 
+# Handle POSTs to the switch
 def post(path, data):
   url = f'{base_url}/{path}'
   if url[-5:] != '.json': url+= '.json'
@@ -13,6 +13,7 @@ def post(path, data):
   if not response.ok:
     raise Exception(response.text)
 
+# Manage Authentication
 def authenticate(username, password):
   auth = {
     'aaaUser': {
@@ -24,6 +25,7 @@ def authenticate(username, password):
   }
   post('aaaLogin', auth)
 
+# Configure the hostname
 def hostname(name):
   payload = {
     'topSystem': {
@@ -34,7 +36,8 @@ def hostname(name):
   }
   post('mo', payload)
 
-def feature(name, state):
+# Manage switch features
+def feature(name, state=True):
   feature_key = {
     'hsrp': 'fmHsrp',
     'interface-vlan': 'fmInterfaceVlan'
@@ -50,6 +53,7 @@ def feature(name, state):
   }
   post('mo/sys/fm.json', payload)
 
+# Create a VRF
 def vrf(name):
   payload = {
     'l3Inst': {
@@ -61,6 +65,7 @@ def vrf(name):
   }
   post('mo/sys', payload)
 
+# Create a network: VLAN and SVI
 def network(name, vlan, ip, vrf='default'):
   payload = {
     'l2BD': {
@@ -108,6 +113,7 @@ def network(name, vlan, ip, vrf='default'):
   } 
   post(f'mo/sys/ipv4/inst/dom-[{vrf}]', payload)
 
+# Configure HSRP for an SVI
 def hsrp(vlan, ip, priority):
   payload = {
     'hsrpIf': {
@@ -132,6 +138,7 @@ def hsrp(vlan, ip, priority):
   }
   post('mo/sys/hsrp/inst', payload)
 
+# Configure and Access interface
 def access_interface(interface, vlan, description):
   payload = {
     'l1PhysIf': {
@@ -146,19 +153,6 @@ def access_interface(interface, vlan, description):
   }
   post('mo/sys/intf', payload)
 
-authenticate('cisco', 'cisco')
-feature('interface-vlan', True)
-feature('hsrp', True)
-hostname('tres-python')
-vrf('chiefs')
-network('mahomes', '15', '192.168.15.2/24', 'chiefs')
-network('kelce', '87', '192.168.87.2/24', 'chiefs')
-network('jones', '95', '192.168.95.2/24', 'chiefs')
-hsrp('15', '192.168.15.1', 110)
-hsrp('87', '192.168.87.1', 110)
-hsrp('95', '192.168.95.1', 110)
-access_interface('eth1/5', '15', 'Mahomes')
-access_interface('eth1/6', '87', 'Kelce')
-access_interface('eth1/7', '95', 'Jones')
-
-session.close()
+# Disconnect
+def disconnect():
+  session.close()
